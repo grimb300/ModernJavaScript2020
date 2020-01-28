@@ -68,10 +68,12 @@ function runApp () {
 				case 'ArrowRight':
 				case 'Right':
 					newX += playerMovement;
+					player.style.transform = 'scale(1,1)'; // Face right (default)
 					break;
 				case 'ArrowLeft':
 				case 'Left':
 					newX -= playerMovement;
+					player.style.transform = 'scale(-1,1)'; // Face left
 					break;
 			}
 	
