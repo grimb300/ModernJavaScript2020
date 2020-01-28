@@ -22,8 +22,8 @@ function runApp () {
 	const coinHeight = coin.getBoundingClientRect().height;
 	const coinWidth = coin.getBoundingClientRect().width;
 	
-	console.log(`Window is ${windowWidth}, ${windowHeight}`);
-	console.log(`Player is ${playerWidth}, ${playerHeight}`);
+	// console.log(`Window is ${windowWidth}, ${windowHeight}`);
+	// console.log(`Player is ${playerWidth}, ${playerHeight}`);
 	
 	// Function to randomize the position of the coin
 	const moveCoin = () => {
@@ -52,7 +52,7 @@ function runApp () {
 			const currY = getPos(player.style.top);
 			let newX = currX;
 			let newY = currY;
-			this.console.log(`${e.key}: Player at ${currX}, ${currY}`);
+			// this.console.log(`${e.key}: Player at ${currX}, ${currY}`);
 	
 			// Update new coordinates based on which arrow was pressed
 			// Older browsers are just Down, Up, Right, Left
@@ -87,7 +87,7 @@ function runApp () {
 
 			// Do stuff if the player reaches the coin
 			if(isTouching(player, coin)) {
-				console.log('Stop touching me!!!!!');
+				// console.log('Stop touching me!!!!!');
 				moveCoin();
 			}
 		
