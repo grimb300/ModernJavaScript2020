@@ -4,3 +4,5 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
 
 * coinGame/
      * Simple DOM manipulation game where a sprite (unsuccessfully) tries to catch a coin
+* timer/
+     * Basic countdown timer with border animation
