@@ -10,14 +10,24 @@ const fetchData = async (searchTerm) => {
 }
 
 const input = document.querySelector('input');
-let timeoutId;
-const onInput = event => {
-  // Debounce the input (only act on a new input after a set timeout)
-  // If a timeout has been set, clear it
-  if (timeoutId) clearTimeout(timeoutId);
-  // Create a new timeout to fetch movies after 1 second
-  timeoutId = setTimeout(() => {
-    fetchData(event.target.value);
-  }, 1000);
+
+// Generic debounce function
+const debounce = (func, delay = 1000) => {
+  let timeoutId;
+  // Return a function with optional arguments "args"
+  return (...args) => {
+    // If timeout has been set, clear it
+    if (timeoutId) clearTimeout(timeoutId);
+
+    // Create a new 1 second timeout for the callback function applying the optional "args"
+    timeoutId = setTimeout(() => {
+      func.apply(null, args);
+    }, delay);
+  };
 };
+
+let timeoutId;
+const onInput = debounce(event => {
+  fetchData(event.target.value);
+}, 500);
 input.addEventListener('input', onInput);
