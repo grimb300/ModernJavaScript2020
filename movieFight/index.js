@@ -6,28 +6,25 @@ const fetchData = async (searchTerm) => {
     }
   });
 
-  console.log(response.data);
+  // If Error response, return empty array
+  if (response.data.Error) return [];
+  // Else return the Search results
+  return response.data.Search;
 }
 
 const input = document.querySelector('input');
 
-// Generic debounce function
-const debounce = (func, delay = 1000) => {
-  let timeoutId;
-  // Return a function with optional arguments "args"
-  return (...args) => {
-    // If timeout has been set, clear it
-    if (timeoutId) clearTimeout(timeoutId);
+const onInput = async event => {
+  const movies = await fetchData(event.target.value);
 
-    // Create a new 1 second timeout for the callback function applying the optional "args"
-    timeoutId = setTimeout(() => {
-      func.apply(null, args);
-    }, delay);
-  };
+  for (let movie of movies) {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <img src="${movie.Poster}" alt="${movie.Title}" />
+      <h1>${movie.Title}</h1>
+    `;
+    document.querySelector('#target').appendChild(div);
+  }
 };
 
-let timeoutId;
-const onInput = debounce(event => {
-  fetchData(event.target.value);
-}, 500);
-input.addEventListener('input', onInput);
+input.addEventListener('input', debounce(onInput, 1000));
