@@ -6,3 +6,8 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Simple DOM manipulation game where a sprite (unsuccessfully) tries to catch a coin
 * timer/
      * Basic countdown timer with border animation
+* movieFight/
+     * Use the axios library to fetch movie data from [The Open Movie Database](http://www.omdbapi.com/)
+     * Create an autocomplete search widget with AJAX to facilitate reuse
+     * Compare search results from two movies to see which is "better"
+* maze/
