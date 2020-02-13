@@ -26,9 +26,24 @@
       </div>
     </section>
     <div class="container">
-      <div class="autocomplete"></div>
-      <div id="summary"></div>
-    </divclass>
+      <div class="columns">
+        <!-- Left movie column -->
+        <div class="column">
+          <div id="left-autocomplete"></div>
+          <div id="left-summary"></div>
+        </div>
+        <!-- Right movie column -->
+        <div class="column">
+          <div id="right-autocomplete"></div>
+          <div id="right-summary"></div>
+        </div>
+      </div>
+      <!-- Instructions -->
+      <div class="column is-half notification is-primary tutorial">
+        <h1 class="title">Search for a Movie on Both Sides</h1>
+        <p class="subtitle">We will tell you which is better!</p>
+      </div>
+    </div>
     <script src="utils.js"></script>
     <script src="autocomplete.js"></script>
     <script src="index.js"></script>
