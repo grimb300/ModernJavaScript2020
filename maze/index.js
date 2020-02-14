@@ -9,6 +9,11 @@ const {
 const width = 600;
 const height = 600;
 
+const numRows = 3;
+const numCols = 3;
+
+const unitLength = width / numCols;
+
 const engine = Engine.create();
 const { world } = engine;
 const render = Render.create({
@@ -25,16 +30,14 @@ Runner.run(Runner.create(), engine);
 
 // Walls
 const walls = [
-  Bodies.rectangle(width / 2, 0, width, 40, { isStatic: true }),      // top
-  Bodies.rectangle(width / 2, height, width, 40, { isStatic: true }), // bottom
-  Bodies.rectangle(0, height / 2,  40, height, { isStatic: true }),   // left
-  Bodies.rectangle(width, height / 2, 40, height, { isStatic: true }) // right
+  Bodies.rectangle(width / 2, 0, width, 20, { isStatic: true }),      // top
+  Bodies.rectangle(width / 2, height, width, 20, { isStatic: true }), // bottom
+  Bodies.rectangle(0, height / 2,  20, height, { isStatic: true }),   // left
+  Bodies.rectangle(width, height / 2, 20, height, { isStatic: true }) // right
 ];
 World.add(world, walls);
 
 // Build the Maze
-const numRows = 3;
-const numCols = 3;
 const grid = Array(numRows).fill(null).map(() => Array(numCols).fill(false));
 const verticals = Array(numRows).fill(null).map(() => Array(numCols - 1).fill(false));
 const horizontals = Array(numRows - 1).fill(null).map(() => Array(numCols).fill(false));
@@ -130,38 +133,94 @@ const stepThroughCell = (row, col) => {
     }
 
     // Remove wall between current cell and neighbor
+    if (direction === 'left') {
+      verticals[row][col - 1] = true;
+    } else if (direction === 'right') {
+      verticals[row][col] = true;
+    } else if (direction === 'up') {
+      horizontals[row - 1][col] = true;
+    } else { // direction === 'down'
+      horizontals[row][col] = true;
+    }
     
+    // Visit next cell
+    stepThroughCell(nextRow, nextCol);
   }
-
-
-
-
-  // Visit next cell
-
 };
 
 stepThroughCell(startRow, startCol);
 
-// Add the verticals and horizontals to the World
-const cellWidth = width / 3;
-const cellHeight = height / 3;
-const verticalWidth = 40;
-const verticalHeight = cellHeight;
-const horizontalWidth = cellWidth;
-const horizontalHeight = 40;
-for (let row = 0; row < verticals.length; row++) {
-  for (let col = 0; col < verticals[row].length; col++) {
-    if (verticals[row][col]) continue;
-    const xPos = cellWidth * (col + 1);
-    const yPos = (verticalHeight / 2) + (cellHeight * row);
-    World.add(world, Bodies.rectangle(xPos, yPos, verticalWidth, verticalHeight, { isStatic: true }));
+horizontals.forEach((row, rowIndex) => {
+  row.forEach((open, columnIndex) => {
+    if (open) {
+      return;
+    }
+
+    const wall = Bodies.rectangle(
+      columnIndex * unitLength + unitLength / 2,
+      rowIndex * unitLength + unitLength,
+      unitLength,
+      10,
+      {
+        isStatic: true
+      }
+    );
+    World.add(world, wall);
+  });
+});
+
+verticals.forEach((row, rowIndex) => {
+  row.forEach((open, columnIndex) => {
+    if (open) {
+      return;
+    }
+    const wall = Bodies.rectangle(
+      columnIndex * unitLength + unitLength,
+      rowIndex * unitLength + unitLength / 2,
+      10,
+      unitLength,
+      {
+        isStatic: true
+      }
+    );
+    World.add(world, wall);
+  });
+});
+
+const goal = Bodies.rectangle(
+  width - unitLength / 2,
+  height - unitLength / 2,
+  unitLength * 0.7,
+  unitLength * 0.7,
+  {
+    isStatic: true
   }
-}
-for (let row = 0; row < horizontals.length; row++) {
-  for (let col = 0; col < horizontals[row].length; col++) {
-    if (horizontals[row][col]) continue;
-    const xPos = (horizontalWidth / 2) + (cellWidth * col);
-    const yPos = cellHeight * (row + 1);
-    World.add(world, Bodies.rectangle(xPos, yPos, horizontalWidth, horizontalHeight, { isStatic: true }));
-  }
-}
+);
+World.add(world, goal);
+
+/////////////////
+// My render loop
+/////////////////
+// // Add the verticals and horizontals to the World
+// const cellWidth = width / 3;
+// const cellHeight = height / 3;
+// const verticalWidth = 40;
+// const verticalHeight = cellHeight;
+// const horizontalWidth = cellWidth;
+// const horizontalHeight = 40;
+// for (let row = 0; row < verticals.length; row++) {
+//   for (let col = 0; col < verticals[row].length; col++) {
+//     if (verticals[row][col]) continue;
+//     const xPos = cellWidth * (col + 1);
+//     const yPos = (verticalHeight / 2) + (cellHeight * row);
+//     World.add(world, Bodies.rectangle(xPos, yPos, verticalWidth, verticalHeight, { isStatic: true }));
+//   }
+// }
+// for (let row = 0; row < horizontals.length; row++) {
+//   for (let col = 0; col < horizontals[row].length; col++) {
+//     if (horizontals[row][col]) continue;
+//     const xPos = (horizontalWidth / 2) + (cellWidth * col);
+//     const yPos = cellHeight * (row + 1);
+//     World.add(world, Bodies.rectangle(xPos, yPos, horizontalWidth, horizontalHeight, { isStatic: true }));
+//   }
+// }
