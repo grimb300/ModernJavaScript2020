@@ -42,7 +42,7 @@ const horizontals = Array(numRows - 1).fill(null).map(() => Array(numCols).fill(
 const startRow = Math.floor(Math.random() * numRows);
 const startCol = Math.floor(Math.random() * numCols);
 
-const stepThroughCell = (cellRow, cellCol) => {
+const myStepThroughCell = (cellRow, cellCol) => {
   // console.log(`Stepping through ${cellRow}, ${cellCol}`);
   // If we've already visited this cell, return
   if (grid[cellRow][cellCol]) return;
@@ -79,8 +79,65 @@ const stepThroughCell = (cellRow, cellCol) => {
     }
 
     // Visit next cell
-    stepThroughCell(neighbor.row, neighbor.col);
+    myStepThroughCell(neighbor.row, neighbor.col);
   });
+};
+
+const shuffle = (arr) => {
+  let counter = arr.length;
+
+  while (counter > 0) {
+    const index = Math.floor(Math.random() * counter);
+    counter--;
+    
+    const temp = arr[counter];
+    arr[counter] = arr[index];
+    arr[index] = temp;
+  }
+
+  return arr;
+};
+
+const stepThroughCell = (row, col) => {
+  // If we've already visited this cell, return
+  if (grid[row][col]) {
+    return;
+  }
+
+  // Mark this cell as visited
+  grid[row][col] = true;
+
+  // Create random-ordered list of neighbors
+  const neighbors = shuffle([
+    [row - 1, col, 'up'], // above
+    [row, col + 1, 'right'], // right
+    [row + 1, col, 'down'], // below
+    [row, col - 1, 'left']  // left
+  ]);
+
+  // For each neighbor...
+  for (let neighbor of neighbors) {
+    const [nextRow, nextCol, direction] = neighbor;
+
+    // Check if neighbor is in bounds
+    if (nextRow < 0 || nextRow >= numRows || nextCol < 0 || nextCol >= numCols) {
+      continue;
+    }
+
+    // If that neighbor has already been visited continue to next neighbor
+    if (grid[nextRow][nextCol]) {
+      continue;
+    }
+
+    // Remove wall between current cell and neighbor
+    
+  }
+
+
+
+
+  // Visit next cell
+
 };
 
 stepThroughCell(startRow, startCol);
