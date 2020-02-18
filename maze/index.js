@@ -1,20 +1,15 @@
-const {
-  Engine,
-  Render,
-  Runner,
-  World,
-  Bodies
-} = Matter;
+const { Engine, Render, Runner, World, Bodies, Body, Events } = Matter;
 
 const width = 600;
 const height = 600;
 
-const numRows = 3;
-const numCols = 3;
+const numRows = 10;
+const numCols = 10;
 
 const unitLength = width / numCols;
 
 const engine = Engine.create();
+engine.world.gravity.y = 0;
 const { world } = engine;
 const render = Render.create({
   element: document.body,
@@ -22,7 +17,7 @@ const render = Render.create({
   options: {
     wireframes: false,
     width: width,
-    height: height 
+    height: height
   }
 });
 Render.run(render);
@@ -30,17 +25,21 @@ Runner.run(Runner.create(), engine);
 
 // Walls
 const walls = [
-  Bodies.rectangle(width / 2, 0, width, 20, { isStatic: true }),      // top
+  Bodies.rectangle(width / 2, 0, width, 20, { isStatic: true }), // top
   Bodies.rectangle(width / 2, height, width, 20, { isStatic: true }), // bottom
-  Bodies.rectangle(0, height / 2,  20, height, { isStatic: true }),   // left
+  Bodies.rectangle(0, height / 2, 20, height, { isStatic: true }), // left
   Bodies.rectangle(width, height / 2, 20, height, { isStatic: true }) // right
 ];
 World.add(world, walls);
 
 // Build the Maze
 const grid = Array(numRows).fill(null).map(() => Array(numCols).fill(false));
-const verticals = Array(numRows).fill(null).map(() => Array(numCols - 1).fill(false));
-const horizontals = Array(numRows - 1).fill(null).map(() => Array(numCols).fill(false));
+const verticals = Array(numRows)
+  .fill(null)
+  .map(() => Array(numCols - 1).fill(false));
+const horizontals = Array(numRows - 1)
+  .fill(null)
+  .map(() => Array(numCols).fill(false));
 
 const startRow = Math.floor(Math.random() * numRows);
 const startCol = Math.floor(Math.random() * numCols);
@@ -62,12 +61,18 @@ const myStepThroughCell = (cellRow, cellCol) => {
   ].sort(() => Math.random() * 2 - 1);
 
   // console.log(neighbors);
-  
+
   // For each neighbor...
-  neighbors.forEach(neighbor => {
+  neighbors.forEach((neighbor) => {
     // console.log(`Checking neighbor at ${neighbor.row}, ${neighbor.col}`);
     // Check if neighbor is in bounds
-    if (neighbor.row < 0 || neighbor.row >= numRows || neighbor.col < 0 || neighbor.col >= numCols) return;
+    if (
+      neighbor.row < 0 ||
+      neighbor.row >= numRows ||
+      neighbor.col < 0 ||
+      neighbor.col >= numCols
+    )
+      return;
 
     // If that neighbor has already been visited continue to next neighbor
     if (grid[neighbor.row][neighbor.col]) return;
@@ -92,7 +97,7 @@ const shuffle = (arr) => {
   while (counter > 0) {
     const index = Math.floor(Math.random() * counter);
     counter--;
-    
+
     const temp = arr[counter];
     arr[counter] = arr[index];
     arr[index] = temp;
@@ -112,18 +117,23 @@ const stepThroughCell = (row, col) => {
 
   // Create random-ordered list of neighbors
   const neighbors = shuffle([
-    [row - 1, col, 'up'], // above
-    [row, col + 1, 'right'], // right
-    [row + 1, col, 'down'], // below
-    [row, col - 1, 'left']  // left
+    [ row - 1, col, 'up' ], // above
+    [ row, col + 1, 'right' ], // right
+    [ row + 1, col, 'down' ], // below
+    [ row, col - 1, 'left' ] // left
   ]);
 
   // For each neighbor...
   for (let neighbor of neighbors) {
-    const [nextRow, nextCol, direction] = neighbor;
+    const [ nextRow, nextCol, direction ] = neighbor;
 
     // Check if neighbor is in bounds
-    if (nextRow < 0 || nextRow >= numRows || nextCol < 0 || nextCol >= numCols) {
+    if (
+      nextRow < 0 ||
+      nextRow >= numRows ||
+      nextCol < 0 ||
+      nextCol >= numCols
+    ) {
       continue;
     }
 
@@ -139,10 +149,11 @@ const stepThroughCell = (row, col) => {
       verticals[row][col] = true;
     } else if (direction === 'up') {
       horizontals[row - 1][col] = true;
-    } else { // direction === 'down'
+    } else {
+      // direction === 'down'
       horizontals[row][col] = true;
     }
-    
+
     // Visit next cell
     stepThroughCell(nextRow, nextCol);
   }
@@ -162,7 +173,8 @@ horizontals.forEach((row, rowIndex) => {
       unitLength,
       10,
       {
-        isStatic: true
+        isStatic: true,
+        label: 'Wall'
       }
     );
     World.add(world, wall);
@@ -180,23 +192,77 @@ verticals.forEach((row, rowIndex) => {
       10,
       unitLength,
       {
-        isStatic: true
+        isStatic: true,
+        label: 'Wall'
       }
     );
     World.add(world, wall);
   });
 });
 
+// Goal
 const goal = Bodies.rectangle(
   width - unitLength / 2,
   height - unitLength / 2,
   unitLength * 0.7,
   unitLength * 0.7,
   {
-    isStatic: true
+    isStatic: true,
+    label: 'Goal'
   }
 );
 World.add(world, goal);
+
+// Ball
+const ball = Bodies.circle(unitLength / 2, unitLength / 2, unitLength / 4, {
+  label: 'Ball'
+});
+World.add(world, ball);
+
+document.addEventListener('keydown', (event) => {
+  const { x, y } = ball.velocity;
+
+  if (event.keyCode === 87) {
+    // w === up
+    Body.setVelocity(ball, { x, y: y - 5 });
+  }
+  if (event.keyCode === 83) {
+    // s === down
+    Body.setVelocity(ball, { x, y: y + 5 });
+  }
+  if (event.keyCode === 65) {
+    // a === left
+    Body.setVelocity(ball, { x: x - 5, y });
+  }
+  if (event.keyCode === 68) {
+    // d === right
+    Body.setVelocity(ball, { x: x + 5, y });
+  }
+});
+
+// Win Condition
+Events.on(engine, 'collisionStart', (event) => {
+  event.pairs.forEach((collision) => {
+    // This makes the if statement detecting the collision a bit shorter and easier to read
+    const labels = [ 'Ball', 'Goal' ];
+
+    // If there is a collision between the Ball and Goal
+    if (
+      labels.includes(collision.bodyA.label) &&
+      labels.includes(collision.bodyB.label)
+    ) {
+      // Turn gravity back on
+      world.gravity.y = 1;
+
+      // And make all Walls collapse to the bottom of the screen
+      world.bodies.forEach((body) => {
+        if (body.label === 'Wall') {
+          Body.setStatic(body, false);
+        }
+      });
+    }
+  });
+});
 
 /////////////////
 // My render loop
