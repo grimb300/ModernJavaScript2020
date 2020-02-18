@@ -1,12 +1,19 @@
 const { Engine, Render, Runner, World, Bodies, Body, Events } = Matter;
 
-const width = 600;
-const height = 600;
+// TODO: For some reason innerWidth/Height doesn't match
+// what the body width/height is, so I have to shave a bit off of each.
+// Figure out why this is.
+const width = window.innerWidth - 1;
+const height = window.innerHeight - 5;
 
+// TODO: Add a variable to create different difficulties (easy, medium, hard)
+// that will change the number of rows/cols automatically.
+// Also add the ability to handle different aspect ratios (portrait, landscape, square)
 const numRows = 10;
-const numCols = 10;
+const numCols = 14;
 
-const unitLength = width / numCols;
+const unitWidth = width / numCols;
+const unitHeight = height / numRows;
 
 const engine = Engine.create();
 engine.world.gravity.y = 0;
@@ -168,13 +175,16 @@ horizontals.forEach((row, rowIndex) => {
     }
 
     const wall = Bodies.rectangle(
-      columnIndex * unitLength + unitLength / 2,
-      rowIndex * unitLength + unitLength,
-      unitLength,
+      columnIndex * unitWidth + unitWidth / 2,
+      rowIndex * unitHeight + unitHeight,
+      unitWidth,
       10,
       {
+        label: 'Wall',
         isStatic: true,
-        label: 'Wall'
+        render: {
+          fillStyle: 'red'
+        }
       }
     );
     World.add(world, wall);
@@ -187,13 +197,16 @@ verticals.forEach((row, rowIndex) => {
       return;
     }
     const wall = Bodies.rectangle(
-      columnIndex * unitLength + unitLength,
-      rowIndex * unitLength + unitLength / 2,
+      columnIndex * unitWidth + unitWidth,
+      rowIndex * unitHeight + unitHeight / 2,
       10,
-      unitLength,
+      unitHeight,
       {
+        label: 'Wall',
         isStatic: true,
-        label: 'Wall'
+        render: {
+          fillStyle: 'red'
+        }
       }
     );
     World.add(world, wall);
@@ -202,20 +215,27 @@ verticals.forEach((row, rowIndex) => {
 
 // Goal
 const goal = Bodies.rectangle(
-  width - unitLength / 2,
-  height - unitLength / 2,
-  unitLength * 0.7,
-  unitLength * 0.7,
+  width - unitWidth / 2,
+  height - unitHeight / 2,
+  unitWidth * 0.7,
+  unitHeight * 0.7,
   {
+    label: 'Goal',
     isStatic: true,
-    label: 'Goal'
+    render: {
+      fillStyle: 'green'
+    }
   }
 );
 World.add(world, goal);
 
 // Ball
-const ball = Bodies.circle(unitLength / 2, unitLength / 2, unitLength / 4, {
-  label: 'Ball'
+const ballRadius = Math.min(unitWidth, unitHeight) / 4;
+const ball = Bodies.circle(unitWidth / 2, unitHeight / 2, ballRadius, {
+  label: 'Ball',
+  render: {
+    fillStyle: 'blue'
+  }
 });
 World.add(world, ball);
 
@@ -251,6 +271,7 @@ Events.on(engine, 'collisionStart', (event) => {
       labels.includes(collision.bodyA.label) &&
       labels.includes(collision.bodyB.label)
     ) {
+      // TODO: Add button to restart game
       // Turn gravity back on
       world.gravity.y = 1;
 
@@ -260,6 +281,9 @@ Events.on(engine, 'collisionStart', (event) => {
           Body.setStatic(body, false);
         }
       });
+
+      // Finally, show the win message
+      document.querySelector('.winner').classList.remove('hidden');
     }
   });
 });
