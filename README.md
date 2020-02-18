@@ -14,3 +14,6 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Using matter.js, create a randomly generated maze
      * Control ball via keyboard toward goal
 * secretMessage/
+     * Take an input message in ASCII and convert to base64 encoded link
+     * The generated link can be shared and will decode the secret message
+     * Deploy to Zeit now (using 'npx now'), [my link](https://modern-js-bootcamp2020-mraa0okf2.now.sh/index.html)

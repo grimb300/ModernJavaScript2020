@@ -108,3 +108,4 @@ dist
 
 # Strange files that Windows10 started automatically adding to my directory
 *:Zone.Identifier
+.now
