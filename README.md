@@ -11,3 +11,5 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Create an autocomplete search widget with AJAX to facilitate reuse
      * Compare search results from two movies to see which is "better"
 * maze/
+     * Using matter.js, create a randomly generated maze
+     * Control ball via keyboard toward goal
