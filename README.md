@@ -29,3 +29,9 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Use chalk to colorize the output
 * watchit/
      * Node.js script that watches a directory and runs a specified program whenever there are changes (nodemon clone)
+     * Use chokidar to monitor a directory for changes (add, change, unlink)
+     * Use lodash.debounce to debounce changes in the directory, keeps it from restarting the program once for every file in the directory at startup
+     * Use caporal as a framework for the CLI program
+     * Use fs.access to check existence of program given on the command line or index.js if no program is given
+     * Use child_process.spawn to kill (if necessary) and launch the program
+     * Use chalk to make things pretty in the terminal
