@@ -25,3 +25,5 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
 * list/
      * Node.js script that lists directories and files much like 'ls'
      * Create an executable with 'npm link'
+     * Explore different methods of calling lstat settling on the "best" being the Promises.all() method of calling async functions
+     * Use chalk to colorize the output
