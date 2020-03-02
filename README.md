@@ -27,3 +27,5 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Create an executable with 'npm link'
      * Explore different methods of calling lstat settling on the "best" being the Promises.all() method of calling async functions
      * Use chalk to colorize the output
+* watchit/
+     * Node.js script that watches a directory and runs a specified program whenever there are changes (nodemon clone)
