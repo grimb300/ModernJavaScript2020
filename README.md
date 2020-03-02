@@ -35,3 +35,6 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Use fs.access to check existence of program given on the command line or index.js if no program is given
      * Use child_process.spawn to kill (if necessary) and launch the program
      * Use chalk to make things pretty in the terminal
+* ecomm/
+     * Express based e-commerce website
+     * Use nodemon to monitor changes and restart the server
