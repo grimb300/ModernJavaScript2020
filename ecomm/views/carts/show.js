@@ -2,7 +2,7 @@ const layout = require('../layout');
 
 module.exports = ({ items }) => {
   const renderedItems = items
-    .map(item => {
+    .map((item) => {
       return `
         <div class="cart-item message">
           <h3 class="subtitle">${item.product.title}</h3>
@@ -14,7 +14,8 @@ module.exports = ({ items }) => {
               $${item.product.price * item.quantity}
             </div>
             <div class="remove">
-              <form method="POST">
+              <form method="POST" action="/cart/products/delete">
+              <input hidden value="${item.id}" name="itemId" />
                 <button class="button is-danger">                  
                   <span class="icon is-small">
                     <i class="fas fa-times"></i>
@@ -27,6 +28,11 @@ module.exports = ({ items }) => {
       `;
     })
     .join('');
+
+  // Calculate the cart total
+  const cartTotal = items.reduce((total, item) => {
+    return total + item.product.price * item.quantity;
+  }, 0);
 
   return layout({
     content: `
@@ -42,7 +48,7 @@ module.exports = ({ items }) => {
               <div class="message-header">
                 Total
               </div>
-              <h1 class="title">$</h1>
+              <h1 class="title">$${cartTotal}</h1>
               <button class="button is-primary">Buy</button>
             </div>
           </div>
