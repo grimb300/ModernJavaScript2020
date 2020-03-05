@@ -38,3 +38,10 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
 * ecomm/
      * Express based e-commerce website
      * Use nodemon to monitor changes and restart the server
+     * Build my own "database" using JSON files for users, products, and carts
+     * Build my own auth solution using libraries: cookie-session and crypto
+     * Build middleware form validators with express-validator library
+     * Handle image uploads with multer library
+* hidash/
+     * Explore testing frameworks
+     * Create a clone of the lodash forEach function
