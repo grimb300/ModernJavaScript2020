@@ -47,3 +47,5 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Create a clone of the lodash forEach and map functions
      * Create home-grown testing library
      * Use mocha to see how little the tests need to change
+* movies.testing/
+     * Copy of earlier project that will have testing added
