@@ -49,3 +49,6 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Use mocha to see how little the tests need to change
 * movies.testing/
      * Copy of earlier project that will have testing added
+     * Find out how much of a pain it is to setup mocha.js to work in the browser
+     * Use chai.js for assertions
+     * Create helper function to wait until a DOM element is visible
