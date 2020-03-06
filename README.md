@@ -44,4 +44,6 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Handle image uploads with multer library
 * hidash/
      * Explore testing frameworks
-     * Create a clone of the lodash forEach function
+     * Create a clone of the lodash forEach and map functions
+     * Create home-grown testing library
+     * Use mocha to see how little the tests need to change
