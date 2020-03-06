@@ -11,5 +11,9 @@
   "license": "ISC",
   "bin": {
     "tme": "index.js"
+  },
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "jsdom": "^16.2.0"
   }
 }
