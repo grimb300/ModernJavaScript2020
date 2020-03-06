@@ -52,3 +52,5 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Find out how much of a pain it is to setup mocha.js to work in the browser
      * Use chai.js for assertions
      * Create helper function to wait until a DOM element is visible
+* tme/
+     * Home spun testing framework
