@@ -1,18 +1,18 @@
 const autoCompleteConfig = {
-  renderOption(movie) {
+  renderOption (movie) {
     const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
     return `
       <img src="${imgSrc}" />
       ${movie.Title} (${movie.Year})
     `;
   },
-  inputValue(movie) {
+  inputValue (movie) {
     return movie.Title;
   },
-  async fetchData(searchTerm) {
+  async fetchData (searchTerm) {
     const response = await axios.get('http://www.omdbapi.com/', {
       params: {
-        apikey: 'd9835cc5',
+        apikey: 'ae10b35e',
         s: searchTerm
       }
     });
@@ -28,7 +28,7 @@ const autoCompleteConfig = {
 createAutoComplete({
   ...autoCompleteConfig,
   root: document.querySelector('#left-autocomplete'),
-  onOptionSelect(movie) {
+  onOptionSelect (movie) {
     document.querySelector('.tutorial').classList.add('is-hidden');
     onMovieSelect(movie, document.querySelector('#left-summary'), 'left');
   }
@@ -36,7 +36,7 @@ createAutoComplete({
 createAutoComplete({
   ...autoCompleteConfig,
   root: document.querySelector('#right-autocomplete'),
-  onOptionSelect(movie) {
+  onOptionSelect (movie) {
     document.querySelector('.tutorial').classList.add('is-hidden');
     onMovieSelect(movie, document.querySelector('#right-summary'), 'right');
   }
@@ -89,7 +89,7 @@ const runComparison = () => {
   });
 };
 
-const movieTemplate = movieDetail => {
+const movieTemplate = (movieDetail) => {
   const dollars = parseInt(
     movieDetail.BoxOffice.replace(/\$/g, '').replace(/,/g, '')
   );
