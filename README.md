@@ -54,3 +54,4 @@ Tutorial work associated with [Modern Javascript Bootcamp Course - 2020](https:/
      * Create helper function to wait until a DOM element is visible
 * tme/
      * Home spun testing framework
+     * Use jsdom library to render web based tests
